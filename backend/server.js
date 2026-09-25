@@ -15,7 +15,8 @@ const WA_CONNECTOR_URL = process.env.WA_CONNECTOR_URL || 'http://localhost:3002'
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://whatsapp-message-intelligence.vercel.app'
+    'https://whatsapp-message-intelligence.vercel.app',
+    'https://whatsapp-message-intelligence-cw12.vercel.app'
   ]
 }));
 app.use(express.json({ limit: '50mb' }));

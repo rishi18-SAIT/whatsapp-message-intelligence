@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# WhatsApp session data
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Build output
+frontend/dist/
+
+# Uploaded media
+backend/uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*

@@ -2,6 +2,18 @@
 
 A production-ready WhatsApp integration system that monitors a specific WhatsApp group, safely deduplicates messages, and uses Google Gemini to automatically classify, summarize, and extract structured data (including analyzing images!) for human review.
 
+## Screenshots
+
+![Application screenshot 1](Images/Pic_1.png)
+
+![Application screenshot 2](Images/Pic_2.png)
+
+![Application screenshot 3](Images/Pic_3.png)
+
+![Application screenshot 4](Images/Pic_4.png)
+
+![Application screenshot 5](Images/Pic_5.png)
+
 ## Setup Instructions
 
 1. **Database:**

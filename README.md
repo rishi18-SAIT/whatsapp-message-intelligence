@@ -4,15 +4,13 @@ A production-ready WhatsApp integration system that monitors a specific WhatsApp
 
 ## Screenshots
 
-![Application screenshot 1](Images/Pic_1.png)
+![Application screenshot 1](Images/Pic_2.png)
 
-![Application screenshot 2](Images/Pic_2.png)
+![Application screenshot 2](Images/Pic_3.png)
 
-![Application screenshot 3](Images/Pic_3.png)
+![Application screenshot 3](Images/Pic_4.png)
 
-![Application screenshot 4](Images/Pic_4.png)
-
-![Application screenshot 5](Images/Pic_5.png)
+![Application screenshot 4](Images/Pic_5.png)
 
 ## Setup Instructions
 

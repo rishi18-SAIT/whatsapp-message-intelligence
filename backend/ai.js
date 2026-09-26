@@ -1,5 +1,6 @@
 const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, 'env') });
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -56,6 +57,24 @@ async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function localFallbackAnalysis(text) {
+    const normalizedText = (text || '').trim();
+    const lowerText = normalizedText.toLowerCase();
+    const isIncident = /\b(outage|down|offline|failure|failed|error|incident|urgent|critical)\b/.test(lowerText);
+    const isQuestion = /\?|\b(what|when|where|why|how|can someone|could someone)\b/.test(lowerText);
+    const isChangeRequest = /\b(change|update|deploy|release|restart|move|modify|enable|disable)\b/.test(lowerText);
+    const category = isIncident ? 'Incident' : isChangeRequest ? 'Change Request' : isQuestion ? 'Question' : 'Routine Update';
+
+    return {
+        category,
+        summary: normalizedText || 'Message received without text',
+        severity: isIncident ? 'High' : 'Low',
+        extracted: { times: [], systems: [], quantities: [], people: [] },
+        requires_attention: true,
+        confidence: 0.5,
+    };
+}
+
 async function analyzeMessage(text, mediaBase64, mediaType) {
     const prompt = `Analyze this WhatsApp message from a group context. Extract the details according to the schema.\nMessage text: "${text || '[Media message without text]'}"`;
     
@@ -81,7 +100,9 @@ async function analyzeMessage(text, mediaBase64, mediaType) {
                 console.log(`[AI] Success with ${modelName}: category=${parsed.category}, confidence=${parsed.confidence}`);
                 return parsed;
             } catch (error) {
-                const isRetryable = error.status === 503 || error.status === 429;
+                // A 429 quota response will not recover during this process, so avoid
+                // delaying message processing with repeated requests.
+                const isRetryable = error.status === 503;
                 console.error(`[AI] ${modelName} attempt ${attempt} failed (${error.status || 'unknown'}): ${error.message}`);
                 
                 if (isRetryable && attempt < 3) {
@@ -96,7 +117,8 @@ async function analyzeMessage(text, mediaBase64, mediaType) {
         console.log(`[AI] All attempts failed for ${modelName}, trying fallback model...`);
     }
     
-    throw new Error("All AI models failed after retries");
+    console.warn('[AI] Gemini unavailable; using local fallback classification.');
+    return localFallbackAnalysis(text);
 }
 
 module.exports = { analyzeMessage };

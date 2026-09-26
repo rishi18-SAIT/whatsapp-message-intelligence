@@ -6,7 +6,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const supabase = require('./db');
 const { analyzeMessage } = require('./ai');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, 'env') });
 
 const app = express();
 const port = process.env.PORT || 3001;
